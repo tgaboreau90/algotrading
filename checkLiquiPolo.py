@@ -8,9 +8,10 @@ rawPoloData = json.loads(requests.get("https://poloniex.com/public?command=retur
 
 # reformat Poloniex pair names to match format on liqui i.e. eth_btc instead of BTC_ETH
 # only include pairs for ETH and BTC as these are the only trades you can make on liqui
+# EDIT - this branch excludes BTC as BTC transfers are not fast enough
 poloData = {'%s_%s' % (pair[4:].lower(), pair[:3].lower()) : pairData 
             for pair, pairData in rawPoloData.iteritems() 
-            if pair.startswith('BTC') or pair.startswith('ETH')}
+            if pair.startswith('ETH')}
 
 # generate string for liqui API call by concatenating pair names in poloData
 liquiPairString = '-'.join([pair for pair in poloData])
