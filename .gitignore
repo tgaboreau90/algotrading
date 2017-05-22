@@ -2,3 +2,4 @@ scrapbook.py
 slackToken.txt
 poloKey.json
 *.pyc
+joinedData.csv
