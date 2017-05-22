@@ -75,3 +75,20 @@ def convertLiquiPair(pair, pairData):
     record['liquiBuyBase'] = float(pairData['sell'])
     record['alphaCode'] = ''.join(sorted([record['liquiBaseCoin'], record['liquiQuoteCoin']]))
     return record
+
+
+def convertBtrexPair(pair):
+    separator = pair['MarketName'].find('-')
+    record = {}
+    record['btrexBaseCoin'] = pair['MarketName'][:separator]
+    record['btrexQuoteCoin'] = pair['MarketName'][separator+1:]
+    record['btrexBuyBase'] = pair['Ask']
+    record['btrexSellBase'] = pair['Bid']
+    record['alphaCode'] = ''.join(sorted([record['btrexBaseCoin'], record['btrexQuoteCoin']]))
+    return record
+
+
+def getBtrexData():
+    btrexCols = ['alphaCode', 'btrexBaseCoin', 'btrexQuoteCoin', 'btrexBuyBase', 'btrexSellBase']
+    rawBtrexData = json.loads(requests.get("https://bittrex.com/api/v1.1/public/getmarketsummaries").text)['result']
+    return pd.DataFrame([convertBtrexPair(pair) for pair in rawBtrexData])[btrexCols].set_index('alphaCode')

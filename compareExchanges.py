@@ -25,6 +25,11 @@ exchanges = {
                          'dataFrame' : getLiquiData(),
                          'makerFee' : 0.99,
                          'takerFee' : 0.9975
+                        },
+             'btrex' : {
+                         'dataFrame' : getBtrexData(),
+                         'makerFee' : 0.99,
+                         'takerFee' : 0.9975
                         }
              }
 
