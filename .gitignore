@@ -1,4 +1,4 @@
 scrapbook.py
 slackToken.txt
 poloKey.json
-
+*.pyc
