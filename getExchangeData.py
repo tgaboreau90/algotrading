@@ -1,8 +1,8 @@
 """
 Generally contains two functions for each exchange:
 
-1) Contains high level logic to access the echange API and return pair data
-2) Contains low-level logic to process data for a specific pair e.g. ETH_BTC
+1) Parent Function - getXxxxxData(): Contains high level logic to access the exchange API and return pairs data
+2) Child Function - convertXxxxxPair(): Contains low-level logic to process data for a specific pair e.g. ETH_BTC
 
 All getXxxxData() functions return a similar data structure to be used in compareExchanges.py
 """

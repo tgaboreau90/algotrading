@@ -42,6 +42,8 @@ for ex1, ex1Data in exchanges.iteritems():
             jdf['buy%sSell%s' % (ex1.title(), ex2.title())] = jdf['%sSellBase' % ex2] / jdf['%sBuyBase' % ex1] * ex1Data['takerFee'] * ex2Data['takerFee']
 
 
+print jdf
+
 jdf.to_csv('joinedData.csv')
 
 
