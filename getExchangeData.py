@@ -16,6 +16,7 @@ import requests
 pd.set_option('display.width', 1000)
 
 
+# functions for Poloniex exchange
 def getPoloData():
     poloCols = ['alphaCode', 'poloBaseCoin', 'poloQuoteCoin', 'poloBuyBase', 'poloSellBase']
     rawPoloData = json.loads(requests.get("https://poloniex.com/public?command=returnTicker").text)
@@ -33,6 +34,7 @@ def convertPoloPair(pair, pairData):
     return record
 
 
+# functions for Kraken exchange
 def getKrakenData():
     krakenCols = ['alphaCode', 'krakenBaseCoin', 'krakenQuoteCoin', 'krakenBuyBase', 'krakenSellBase']
     krakenAssets = json.loads(requests.get("https://api.kraken.com/0/public/Assets").text)['result']
@@ -59,6 +61,7 @@ def convertKrakenPair(pair, pairData, krakenAssets):
     return record if record['krakenBaseCoin'] in ('BTC', 'ETH') else None
 
 
+# functions for Liqui exchange
 def getLiquiData():
     liquiCols = ['alphaCode', 'liquiBaseCoin', 'liquiQuoteCoin', 'liquiBuyBase', 'liquiSellBase']
     liquiPairString = '-'.join([pair for pair in json.loads(requests.get("https://api.liqui.io/api/3/info").text)['pairs']])
@@ -77,6 +80,13 @@ def convertLiquiPair(pair, pairData):
     return record
 
 
+# functions for bittrex exchange
+def getBtrexData():
+    btrexCols = ['alphaCode', 'btrexBaseCoin', 'btrexQuoteCoin', 'btrexBuyBase', 'btrexSellBase']
+    rawBtrexData = json.loads(requests.get("https://bittrex.com/api/v1.1/public/getmarketsummaries").text)['result']
+    return pd.DataFrame([convertBtrexPair(pair) for pair in rawBtrexData])[btrexCols].set_index('alphaCode')
+
+
 def convertBtrexPair(pair):
     separator = pair['MarketName'].find('-')
     record = {}
@@ -87,8 +97,3 @@ def convertBtrexPair(pair):
     record['alphaCode'] = ''.join(sorted([record['btrexBaseCoin'], record['btrexQuoteCoin']]))
     return record
 
-
-def getBtrexData():
-    btrexCols = ['alphaCode', 'btrexBaseCoin', 'btrexQuoteCoin', 'btrexBuyBase', 'btrexSellBase']
-    rawBtrexData = json.loads(requests.get("https://bittrex.com/api/v1.1/public/getmarketsummaries").text)['result']
-    return pd.DataFrame([convertBtrexPair(pair) for pair in rawBtrexData])[btrexCols].set_index('alphaCode')
